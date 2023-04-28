@@ -1,125 +1,125 @@
 CREATE TABLE Acidente_Condicao (
-    Accident_Index VARCHAR PRIMARY KEY,
-    Accident_Severity SMALLINT,
-    Number_of_Casualties SMALLINT,
-    Number_of_Vehicles SMALLINT,
-    Data DATE,
-    dia_da_semana SMALLINT,
-    Light_Conditions SMALLINT,
-    Weather_Conditions SMALLINT,
-    Road_Surface_Conditions SMALLINT,
-    Special_Conditions_at_Site SMALLINT,
-    Carriageway_Hazards SMALLINT
+    Accident_Index VARCHAR PRIMARY KEY NOT NULL,
+    Accident_Severity SMALLINT NOT NULL,
+    Number_of_Casualties SMALLINT NOT NULL,
+    Number_of_Vehicles SMALLINT NOT NULL,
+    Data DATE NOT NULL,
+    dia_da_semana SMALLINT NOT NULL,
+    Light_Conditions SMALLINT NOT NULL,
+    Weather_Conditions SMALLINT NOT NULL,
+    Road_Surface_Conditions SMALLINT NOT NULL,
+    Special_Conditions_at_Site SMALLINT NOT NULL,
+    Carriageway_Hazards SMALLINT NOT NULL
 );
 
 CREATE TABLE Veiculo (
-    auto_increment LONGINT PRIMARY KEY,
-    Vehicle_Type SMALLINT,
-    Vehicle_Manoeuvre SMALLINT,
-    Vehicle_Location-Restricted_Lane SMALLINT,
-    Skidding_and_Overturning SMALLINT,
-    Hit_Object_in_Carriageway SMALLINT,
-    Vehicle_Leaving_Carriageway SMALLINT,
-    Hit_Object_off_Carriageway SMALLINT,
-    1st_Point_of_Impact SMALLINT,
-    Was_Vehicle_Left_Hand_Drive? SMALLINT,
-    Journey_Purpose_of_Driver] SMALLINT,
-    Sex_of_Driver SMALLINT,
-    Age_of_Driver SMALLINT,
-    Age_Band_of_Driver SMALLINT,
-    Engine_Capacity_(CC) INT,
-    Age_of_Vehicle SMALLINT,
-    Driver_IMD_Decile SMALLINT,
-    Driver_Home_Area_Type SMALLINT
+    auto_increment LONGINT PRIMARY KEY NOT NULL,
+    Vehicle_Type SMALLINT NOT NULL,
+    Vehicle_Manoeuvre SMALLINT NOT NULL,
+    Vehicle_Location-Restricted_Lane SMALLINT NOT NULL,
+    Skidding_and_Overturning SMALLINT NOT NULL,
+    Hit_Object_in_Carriageway SMALLINT NOT NULL,
+    Vehicle_Leaving_Carriageway SMALLINT NOT NULL,
+    Hit_Object_off_Carriageway SMALLINT NOT NULL,
+    1st_Point_of_Impact SMALLINT NOT NULL,
+    Was_Vehicle_Left_Hand_Drive? SMALLINT NOT NULL,
+    Journey_Purpose_of_Driver] SMALLINT NOT NULL,
+    Sex_of_Driver SMALLINT NOT NULL,
+    Age_of_Driver SMALLINT NOT NULL,
+    Age_Band_of_Driver SMALLINT NOT NULL,
+    Engine_Capacity_(CC) INT NOT NULL,
+    Age_of_Vehicle SMALLINT NOT NULL,
+    Driver_IMD_Decile SMALLINT NOT NULL,
+    Driver_Home_Area_Type SMALLINT NOT NULL
 );
 
 CREATE TABLE Simples (
-    tração VARCHAR,
-    qtd_de_portas SMALLINT,
-    fk_Veiculo_auto_increment LONGINT PRIMARY KEY
+    tração VARCHAR NOT NULL,
+    qtd_de_portas SMALLINT NOT NULL,
+    fk_Veiculo_auto_increment LONGINT PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE Articulado (
-    Articulacao SMALLINT,
-    fk_guincho_guincho_PK BOOLEAN,
-    fk_Veiculo_auto_increment LONGINT PRIMARY KEY
+    Articulacao SMALLINT NOT NULL,
+    fk_guincho_guincho_PK BOOLEAN NOT NULL,
+    fk_Veiculo_auto_increment LONGINT PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE Local (
-    Latitude_Longitude LONGINT PRIMARY KEY,
-    Road_class SMALLINT,
-    Road_number SMALLINT,
-    Speed_limit SMALLINT,
-    road_type SMALLINT,
-    Urban_or_Rural_Area SMALLINT,
-    LSOA_of_Accident_Location VARCHAR,
-    fk_Acidente_Condicao_Accident_Index VARCHAR
+    Latitude_Longitude LONGINT PRIMARY KEY NOT NULL,
+    Road_class SMALLINT NOT NULL,
+    Road_number SMALLINT NOT NULL,
+    Speed_limit SMALLINT NOT NULL,
+    road_type SMALLINT NOT NULL,
+    Urban_or_Rural_Area SMALLINT NOT NULL,
+    LSOA_of_Accident_Location VARCHAR NOT NULL,
+    fk_Acidente_Condicao_Accident_Index VARCHAR NOT NULL
 );
 
 CREATE TABLE Autoridade (
-    Police_Force SMALLINT,
-    District SMALLINT,
-    Highway SMALLINT,
-    Did_Police_Officer_Attend_Scene_of_Accident SMALLINT,
-    auto_increment LONGINT PRIMARY KEY,
-    fk_Acidente_Condicao_Accident_Index VARCHAR
+    Police_Force SMALLINT NOT NULL,
+    District SMALLINT NOT NULL,
+    Highway SMALLINT NOT NULL,
+    Did_Police_Officer_Attend_Scene_of_Accident SMALLINT NOT NULL,
+    auto_increment LONGINT PRIMARY KEY NOT NULL,
+    fk_Acidente_Condicao_Accident_Index VARCHAR NOT NULL
 );
 
 CREATE TABLE casualidades (
-    Casualty_Class SMALLINT,
-    Sex_of_Casualty SMALLINT,
-    Age_of_Casualty SMALLINT,
-    Age_Band_of_Casualty SMALLINT,
-    Casualty_Severity SMALLINT,
-    Car_Passenger SMALLINT,
-    Bus_or_Coach_Passenger SMALLINT,
-    Pedestrian_Road_Maintenance_Worker SMALLINT,
-    Casualty_Type SMALLINT,
-    Casualty_Home_Area_Type SMALLINT,
-    auto_increment LONGINT PRIMARY KEY
+    Casualty_Class SMALLINT NOT NULL,
+    Sex_of_Casualty SMALLINT NOT NULL,
+    Age_of_Casualty SMALLINT NOT NULL,
+    Age_Band_of_Casualty SMALLINT NOT NULL,
+    Casualty_Severity SMALLINT NOT NULL,
+    Car_Passenger SMALLINT NOT NULL,
+    Bus_or_Coach_Passenger SMALLINT NOT NULL,
+    Pedestrian_Road_Maintenance_Worker SMALLINT NOT NULL,
+    Casualty_Type SMALLINT NOT NULL,
+    Casualty_Home_Area_Type SMALLINT NOT NULL,
+    auto_increment LONGINT PRIMARY KEY NOT NULL
 );
 
 CREATE TABLE guincho (
-    guincho SMALLINT,
-    fk_art_guin LONGINT
+    guincho SMALLINT NOT NULL,
+    fk_art_guin LONGINT NOT NULL
 );
 
 CREATE TABLE 2nd road (
-    Road_class SMALLINT,
-    Road_number SMALLINT,
-    fk_Local_2nd LONGINT
+    Road_class SMALLINT NOT NULL,
+    Road_number SMALLINT NOT NULL,
+    fk_Local_2nd LONGINT NOT NULL
 );
 
 CREATE TABLE junction (
-    detail SMALLINT,
-    control SMALLINT,
-    location SMALLINT,
-    fk_Local_junction LONGINT
+    detail SMALLINT NOT NULL,
+    control SMALLINT NOT NULL,
+    location SMALLINT NOT NULL,
+    fk_Local_junction LONGINT NOT NULL
 );
 
 CREATE TABLE Ped_Location (
-    Ped_Location SMALLINT,
-    fk_Local_ped_location LONGINT
+    Ped_Location SMALLINT NOT NULL,
+    fk_Local_ped_location LONGINT NOT NULL NOT NULL
 );
 
 CREATE TABLE Ped_Cross_Physical (
-    Ped_Cross_Physical SMALLINT,
-    fk_local_ped_cross LONGINT
+    Ped_Cross_Physical SMALLINT NOT NULL,
+    fk_local_ped_cross LONGINT NOT NULL
 );
 
 CREATE TABLE Ped_Cross_Human (
-    Ped_Cross_Human SMALLINT,
-    fk_Autoridade_Ped_Cross_Human LONGINT
+    Ped_Cross_Human SMALLINT NOT NULL,
+    fk_Autoridade_Ped_Cross_Human LONGINT NOT NULL
 );
 
 CREATE TABLE acontece (
-    fk_Acidente_Condicao_Accident_Index VARCHAR,
-    fk_Veiculo_auto_increment LONGINT
+    fk_Acidente_Condicao_Accident_Index VARCHAR NOT NULL,
+    fk_Veiculo_auto_increment LONGINT NOT NULL
 );
 
 CREATE TABLE sofre (
-    fk_casualidades_auto_increment LONGINT,
-    fk_Acidente_Condicao_Accident_Index VARCHAR
+    fk_casualidades_auto_increment LONGINT NOT NULL,
+    fk_Acidente_Condicao_Accident_Index VARCHAR NOT NULL
 );
  
 ALTER TABLE Simples ADD CONSTRAINT FK_Simples_2
