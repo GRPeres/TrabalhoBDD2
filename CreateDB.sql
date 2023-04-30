@@ -1,13 +1,15 @@
-DROP database bdd_trabalho;
-CREATE DATABASE bdd_trabalho;
-USE bdd_trabalho;
-CREATE TABLE Acidente_Condicao (
-    Accident_Index VARCHAR(13) PRIMARY KEY NOT NULL,
+CREATE DATABASE bd_trabalho;
+
+
+USE bd_trabalho;
+
+
+CREATE TABLE accident_condition (
+    Accident_Index BIGINT AUTO_INCREMENT PRIMARY KEY ,
     Accident_Severity SMALLINT NOT NULL,
-    Number_of_Casualties SMALLINT NOT NULL,
     Number_of_Vehicles SMALLINT NOT NULL,
-    Data DATE NOT NULL,
-    dia_da_semana SMALLINT NOT NULL,
+    Number_of_Casualties SMALLINT NOT NULL,
+    Day_Of_The_Week SMALLINT NOT NULL,
     Light_Conditions SMALLINT NOT NULL,
     Weather_Conditions SMALLINT NOT NULL,
     Road_Surface_Conditions SMALLINT NOT NULL,
@@ -15,8 +17,8 @@ CREATE TABLE Acidente_Condicao (
     Carriageway_Hazards SMALLINT NOT NULL
 );
 
-CREATE TABLE Veiculo (
-    idt_veiculo BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+CREATE TABLE vehicle (
+    Idt_Vehicle BIGINT AUTO_INCREMENT PRIMARY KEY,
     Vehicle_Type SMALLINT NOT NULL,
     Vehicle_Manoeuvre SMALLINT NOT NULL,
     Vehicle_Location_Restricted_Lane SMALLINT NOT NULL,
@@ -36,39 +38,50 @@ CREATE TABLE Veiculo (
     Driver_Home_Area_Type SMALLINT NOT NULL
 );
 
-CREATE TABLE Simples (
-    tracao SMALLINT NOT NULL,
-    qtd_de_portas SMALLINT NOT NULL,
-    fk_Veiculo_auto_increment BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL
+CREATE TABLE simples (
+    Fk_Simple_Vehicle BIGINT AUTO_INCREMENT PRIMARY KEY,
+    Traction SMALLINT NOT NULL,
+    Amount_of_Doors SMALLINT NOT NULL,
+    FOREIGN KEY (Fk_Simple_Vehicle)
+    REFERENCES vehicle (Idt_Vehicle)
 );
 
-CREATE TABLE Articulado (
-    Articulacao SMALLINT NOT NULL,
-    fk_guincho_guincho_PK BOOLEAN NOT NULL,
-    fk_Veiculo_auto_increment BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL
+CREATE TABLE articulated (
+    Fk_Articulated_Vehicle BIGINT AUTO_INCREMENT PRIMARY KEY,
+    Articulation SMALLINT NOT NULL,
+    Guincho BOOLEAN NOT NULL,
+    FOREIGN KEY (Fk_Articulated_Vehicle)
+    REFERENCES vehicle (Idt_Vehicle)
 );
 
-CREATE TABLE Local (
-    Latitude_Longitude BIGINT PRIMARY KEY NOT NULL,
-    Road_class SMALLINT NOT NULL,
-    Road_number SMALLINT NOT NULL,
-    Speed_limit SMALLINT NOT NULL,
-    road_type SMALLINT NOT NULL,
-    Urban_or_Rural_Area SMALLINT NOT NULL,
-    LSOA_of_Accident_Location VARCHAR(9) NOT NULL,
-    fk_Acidente_Condicao_Accident_Index VARCHAR(13) NOT NULL
+CREATE TABLE location (
+    Idt_Location BIGINT AUTO_INCREMENT PRIMARY KEY,
+    Latitude VARCHAR(15),
+    Longitude VARCHAR(15),
+    Road_Class SMALLINT,
+    Road_Number SMALLINT,
+    Road_Type SMALLINT,
+    Speed_Limit SMALLINT,
+    Urban_or_Rural_Area SMALLINT,
+    Lsoa_of_Accident_Location VARCHAR(9),
+    Fk_Accident_Index BIGINT NOT NULL,
+    FOREIGN KEY (Fk_Accident_Index)
+    REFERENCES accident_condition (Accident_Index)
 );
 
-CREATE TABLE Autoridade (
+CREATE TABLE authority (
+    Idt_Authority BIGINT AUTO_INCREMENT PRIMARY KEY,
     Police_Force SMALLINT NOT NULL,
     District SMALLINT NOT NULL,
-    Highway SMALLINT NOT NULL,
+    Highway VARCHAR(15) NOT NULL,
     Did_Police_Officer_Attend_Scene_of_Accident SMALLINT NOT NULL,
-    idt_Autoridade BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-	fk_Acidente_Condicao_Accident_Index VARCHAR(13) NOT NULL
+	Fk_Accident_Index BIGINT NOT NULL,
+    FOREIGN KEY (Fk_Accident_Index)
+    REFERENCES accident_condition (Accident_Index)
 );
 
-CREATE TABLE casualidades (
+CREATE TABLE casualties (
+    Idt_Casualties BIGINT AUTO_INCREMENT PRIMARY KEY,
     Casualty_Class SMALLINT NOT NULL,
     Sex_of_Casualty SMALLINT NOT NULL,
     Age_of_Casualty SMALLINT NOT NULL,
@@ -78,113 +91,43 @@ CREATE TABLE casualidades (
     Bus_or_Coach_Passenger SMALLINT NOT NULL,
     Pedestrian_Road_Maintenance_Worker SMALLINT NOT NULL,
     Casualty_Type SMALLINT NOT NULL,
-    Casualty_Home_Area_Type SMALLINT NOT NULL,
-    idt_casualidades BIGINT AUTO_INCREMENT PRIMARY KEY NOT NULL
-);
-
-CREATE TABLE guincho (
-    guincho SMALLINT NOT NULL,
-    fk_art_guin BIGINT NOT NULL
+    Casualty_Home_Area_Type SMALLINT NOT NULL  
 );
 
 CREATE TABLE second_road (
+    Idt_Second_Road BIGINT AUTO_INCREMENT PRIMARY KEY,
     Road_class SMALLINT NOT NULL,
     Road_number SMALLINT NOT NULL,
-    fk_Local_2nd BIGINT NOT NULL
+    Fk_Location BIGINT NOT NULL,
+    FOREIGN KEY (Fk_Location)
+    REFERENCES location (Idt_Location)
 );
 
-CREATE TABLE junction (
-    detail SMALLINT NOT NULL,
-    control SMALLINT NOT NULL,
-    location SMALLINT NOT NULL,
-    fk_Local_junction BIGINT NOT NULL
-);
-
-CREATE TABLE Ped_Location (
-    Ped_Location SMALLINT NOT NULL,
-    fk_Local_ped_location BIGINT NOT NULL NOT NULL
-);
-
-CREATE TABLE Ped_Cross_Physical (
-    Ped_Cross_Physical SMALLINT NOT NULL,
-    fk_local_ped_cross BIGINT NOT NULL
-);
-
-CREATE TABLE Ped_Cross_Human (
+CREATE TABLE ped_cross_human (
+    Idt_Ped_Cross_Human BIGINT AUTO_INCREMENT PRIMARY KEY,
     Ped_Cross_Human SMALLINT NOT NULL,
-    fk_Autoridade_Ped_Cross_Human BIGINT NOT NULL
+    Fk_Authority BIGINT NOT NULL,
+    FOREIGN KEY (Fk_Authority)
+    REFERENCES authority (Idt_Authority)
 );
 
 CREATE TABLE acontece (
-    fk_Acidente_Condicao_Accident_Index VARCHAR(13) NOT NULL,
-    fk_Veiculo_auto_increment BIGINT NOT NULL
+    Fk_Accident_Index BIGINT NOT NULL,
+    Fk_Vehicle BIGINT NOT NULL,
+    PRIMARY KEY (Fk_Accident_Index, Fk_Vehicle),
+    FOREIGN KEY (Fk_Accident_Index)
+    REFERENCES accident_condition (Accident_Index),
+    FOREIGN KEY (Fk_Vehicle)
+    REFERENCES vehicle (Idt_Vehicle)
 );
 
 CREATE TABLE sofre (
-    fk_casualidades_idt_casualidades BIGINT NOT NULL,
-    fk_Acidente_Condicao_Accident_Index VARCHAR(13)
+    Fk_Accident_Index BIGINT NOT NULL,
+    Fk_Casualties BIGINT NOT NULL,
+    PRIMARY KEY (Fk_Accident_Index, Fk_Casualties),
+    FOREIGN KEY (Fk_Casualties)
+    REFERENCES casualties (Idt_Casualties),
+    FOREIGN KEY (Fk_Accident_Index)
+    REFERENCES accident_condition (Accident_Index)
 );
- 
-ALTER TABLE Simples ADD CONSTRAINT FK_Simples_2
-    FOREIGN KEY (fk_Veiculo_auto_increment)
-    REFERENCES Veiculo (idt_veiculo)
-    ON DELETE CASCADE;
- 
-ALTER TABLE Articulado ADD CONSTRAINT FK_Articulado_3
-    FOREIGN KEY (fk_Veiculo_auto_increment)
-    REFERENCES Veiculo (idt_veiculo)
-    ON DELETE CASCADE;
- 
-ALTER TABLE Local ADD CONSTRAINT FK_Local_1
-    FOREIGN KEY (fk_Acidente_Condicao_Accident_Index)
-    REFERENCES Acidente_Condicao (Accident_Index)
-    ON DELETE RESTRICT;
- 
-ALTER TABLE Autoridade ADD CONSTRAINT FK_Autoridade_3
-    FOREIGN KEY (fk_Acidente_Condicao_Accident_Index)
-    REFERENCES Acidente_Condicao (Accident_Index)
-    ON DELETE RESTRICT;
- 
-ALTER TABLE guincho ADD CONSTRAINT FK_guincho_1
-    FOREIGN KEY (fk_art_guin)
-    REFERENCES Articulado (fk_Veiculo_auto_increment);
- 
-ALTER TABLE second_road ADD CONSTRAINT FK_second_road_1
-    FOREIGN KEY (fk_Local_2nd)
-    REFERENCES Local (Latitude_Longitude);
- 
-ALTER TABLE junction ADD CONSTRAINT FK_junction_1
-    FOREIGN KEY (fk_Local_junction)
-    REFERENCES Local (Latitude_Longitude);
- 
-ALTER TABLE Ped_Location ADD CONSTRAINT FK_Ped_Location_1
-    FOREIGN KEY (fk_Local_ped_location)
-    REFERENCES Local (Latitude_Longitude);
- 
-ALTER TABLE Ped_Cross_Physical ADD CONSTRAINT FK_Ped_Cross_Physical_1
-    FOREIGN KEY (fk_local_ped_cross)
-    REFERENCES Local (Latitude_Longitude);
- 
-ALTER TABLE Ped_Cross_Human ADD CONSTRAINT FK_Ped_Cross_Human_1
-    FOREIGN KEY (fk_Autoridade_Ped_Cross_Human)
-    REFERENCES Autoridade (idt_Autoridade);
- 
-ALTER TABLE acontece ADD CONSTRAINT FK_acontece_1
-    FOREIGN KEY (fk_Acidente_Condicao_Accident_Index)
-    REFERENCES Acidente_Condicao (Accident_Index)
-    ON DELETE RESTRICT;
- 
-ALTER TABLE acontece ADD CONSTRAINT FK_acontece_2
-    FOREIGN KEY (fk_Veiculo_auto_increment)
-    REFERENCES Veiculo (idt_veiculo)
-    ON DELETE RESTRICT;
- 
-ALTER TABLE sofre ADD CONSTRAINT FK_sofre_1
-    FOREIGN KEY (fk_casualidades_idt_casualidades)
-    REFERENCES casualidades (idt_casualidades)
-    ON DELETE RESTRICT;
- 
-ALTER TABLE sofre ADD CONSTRAINT FK_sofre_2
-    FOREIGN KEY (fk_Acidente_Condicao_Accident_Index)
-    REFERENCES Acidente_Condicao (Accident_Index)
-    ON DELETE RESTRICT;
+
